@@ -1,4 +1,6 @@
 import java.io.ByteArrayOutputStream
+import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -21,6 +23,9 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("config")
+    }
     buildTypes {
         debug {
             isDebuggable = true
@@ -34,11 +39,13 @@ android {
             versionNameSuffix = createDebugVersionNameSuffix()
         }
         release {
-            isMinifyEnabled = false
+            isDebuggable = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("config")
         }
     }
     compileOptions {
@@ -51,6 +58,32 @@ android {
     buildFeatures {
         buildConfig = true
         viewBinding = true
+    }
+
+    // Apply signingConfigs.
+    val keystorePropFilePath = "../keystore.properties"
+    file(keystorePropFilePath).let { propFile ->
+        if (!propFile.canRead()){
+            logger.log(LogLevel.ERROR, "$keystorePropFilePath not found")
+            return@let
+        }
+
+        val props = Properties()
+        props.load(FileInputStream(propFile))
+        if (!props.containsKey("storeFile") || !props.containsKey("storePassword") ||
+            !props.containsKey("keyAlias") || !props.containsKey("keyPassword")) {
+            logger.log(LogLevel.ERROR, "$keystorePropFilePath found but some entries are missing")
+            return@let
+        }
+
+        android.signingConfigs.getByName("config") {
+            storeFile = file(props["storeFile"]!!)
+            storePassword = props["storePassword"] as String
+            keyAlias = props["keyAlias"] as String
+            keyPassword = props["keyPassword"] as String
+        }.let {
+            android.buildTypes.forEach { type -> type.signingConfig = it }
+        }
     }
 }
 
@@ -72,7 +105,6 @@ fun createDebugVersionNameSuffix(): String {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

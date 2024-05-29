@@ -15,3 +15,5 @@
 local.properties
 
 /.idea/deploymentTargetSelector.xml
+keystore.properties
+*.jks
