@@ -6,10 +6,16 @@ junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 appcompat = "1.6.1"
-material = "1.10.0"
+material = "1.12.0"
 constraintlayout = "2.1.4"
 navigationFragmentKtx = "2.7.7"
 navigationUiKtx = "2.7.7"
+daggerHilt = "2.51.1"
+timber = "5.0.1"
+leakcanaryAndroid = "2.14"
+hyperionCore = "0.9.38"
+flipper = "0.250.0"
+soloader = "0.10.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -21,8 +27,28 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
+dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "daggerHilt" }
+dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "daggerHilt" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanaryAndroid" }
+hyperion-core = { module = "com.willowtreeapps.hyperion:hyperion-core", version.ref = "hyperionCore" }
+hyperion-attr = { module = "com.willowtreeapps.hyperion:hyperion-attr", version.ref = "hyperionCore" }
+hyperion-build-config = { module = "com.willowtreeapps.hyperion:hyperion-build-config", version.ref = "hyperionCore" }
+hyperion-crash = { module = "com.willowtreeapps.hyperion:hyperion-crash", version.ref = "hyperionCore" }
+hyperion-disk = { module = "com.willowtreeapps.hyperion:hyperion-disk", version.ref = "hyperionCore" }
+hyperion-geiger-counter = { module = "com.willowtreeapps.hyperion:hyperion-geiger-counter", version.ref = "hyperionCore" }
+hyperion-measurement = { module = "com.willowtreeapps.hyperion:hyperion-measurement", version.ref = "hyperionCore" }
+hyperion-phoenix = { module = "com.willowtreeapps.hyperion:hyperion-phoenix", version.ref = "hyperionCore" }
+hyperion-recorder = { module = "com.willowtreeapps.hyperion:hyperion-recorder", version.ref = "hyperionCore" }
+hyperion-shared-preferences = { module = "com.willowtreeapps.hyperion:hyperion-shared-preferences", version.ref = "hyperionCore" }
+hyperion-timber = { module = "com.willowtreeapps.hyperion:hyperion-timber", version.ref = "hyperionCore" }
+flipper = { module = "com.facebook.flipper:flipper", version.ref = "flipper" }
+flipper-leakcanary2-plugin = { module = "com.facebook.flipper:flipper-leakcanary2-plugin", version.ref = "flipper" }
+soloader = { module = "com.facebook.soloader:soloader", version.ref = "soloader" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
 
