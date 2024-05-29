@@ -1,3 +1,5 @@
+import java.io.ByteArrayOutputStream
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -14,12 +16,23 @@ android {
         minSdk = 24
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.0.1a"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
+        debug {
+            isDebuggable = true
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = createDebugVersionNameSuffix()
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -39,6 +52,23 @@ android {
         buildConfig = true
         viewBinding = true
     }
+}
+
+fun createDebugVersionNameSuffix(): String {
+    val commitHash = ByteArrayOutputStream().also {
+        exec {
+            isIgnoreExitValue = true
+            commandLine("git", "rev-parse", "--short", "HEAD")
+            standardOutput = it
+        }.exitValue.let { v -> if (v != 0) return "-dev" }
+    }.toString().trim()
+
+    val dirtyIndicator = exec {
+        isIgnoreExitValue = true
+        commandLine("git", "diff", "--shortstat", "--exit-code", "--quiet")
+    }.exitValue.let { if (it == 0) "" else " (dirty)" }
+
+    return "-dev ($commitHash)$dirtyIndicator"
 }
 
 dependencies {
