@@ -25,4 +25,13 @@
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/SettingsFragment"
+        android:name="net.urainter.overlay.SettingsFragment"
+        android:label="@string/settings_fragment_label" />
+
+    <action
+        android:id="@+id/action_SettingsFragment"
+        app:destination="@id/SettingsFragment" />
 </navigation>

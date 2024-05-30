@@ -4,6 +4,7 @@
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
+    <string name="settings_fragment_label">Settings</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
@@ -43,4 +44,30 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+
+    <string name="key_mqtt_enabled">mqttEnabled</string>
+    <string name="key_mqtt_url">mqttUrl</string>
+    <string name="key_mqtt_topic">mqttTopic</string>
+    <string name="key_mqtt_username">mqttUsername</string>
+    <string name="key_mqtt_password">mqttPassword</string>
+    <string name="key_mqtt_keep_connection_while_screen_is_off">mqttKeepConnectionWhileScreenIsOff</string>
+    <string name="key_tcp_enabled">tcpEnabled</string>
+    <string name="key_tcp_bind_address">tcpBindAddress</string>
+    <string name="key_tcp_listen_port">tcpListenPort</string>
+    <string name="key_tcp_keep_listening_while_screen_is_off">tcpKeepListeningWhileScreenIsOff</string>
+
+    <string name="preference_enable_mqtt">Enable MQTT</string>
+    <string name="preference_server_uri">Server URI</string>
+    <string name="preference_topic">Topic</string>
+    <string name="preference_username">Username</string>
+    <string name="preference_password">Password</string>
+    <string name="preference_keep_connection_while_screen_is_off">Keep connection while screen is off</string>
+    <string name="preference_category_mqtt">MQTT</string>
+    <string name="preference_category_tcp_listener">TCP Listener</string>
+    <string name="preference_enable_tcp">Enable TCP Listener</string>
+    <string name="preference_bind_address">Bind address</string>
+    <string name="preference_listen_port">Listen port</string>
+    <string name="preference_keep_listening_while_screen_is_off">Keep listening while screen is off</string>
+    <string name="default_key_tcp_listen_port">2525</string>
+    <string name="default_key_tcp_bind_address">::</string>
 </resources>
