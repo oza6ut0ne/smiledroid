@@ -1,6 +1,8 @@
+import com.android.build.gradle.internal.tasks.factory.dependsOn
 import java.io.ByteArrayOutputStream
 import java.io.FileInputStream
 import java.util.Properties
+import java.util.regex.Pattern
 
 plugins {
     alias(libs.plugins.android.application)
@@ -144,4 +146,37 @@ dependencies {
 
 kapt {
     correctErrorTypes = true
+}
+
+fun getCurrentBuildType(): Pair<String, String> {
+    val taskRequestsStr = gradle.startParameter.taskRequests.toString()
+    val pattern: Pattern = if (taskRequestsStr.contains("assemble")) {
+        Pattern.compile("assemble(\\w*)(Release|Debug)")
+    } else {
+        Pattern.compile("bundle(\\w*)(Release|Debug)")
+    }
+
+    val matcher = pattern.matcher(taskRequestsStr)
+    return if (matcher.find()) {
+        matcher.group(1).lowercase() to matcher.group(2).lowercase()
+    } else {
+        "" to ""
+    }
+}
+
+project.tasks.preBuild.dependsOn("buildWeb")
+
+task("buildWeb") {
+    val (_, buildType) = getCurrentBuildType()
+    val npmCommand = when (buildType) {
+        "debug" -> "bundle:dev"
+        "release" -> "bundle"
+        else -> return@task
+    }
+    doFirst {
+        exec {
+            workingDir = File(projectDir, "web")
+            commandLine("npm", "run", npmCommand)
+        }
+    }
 }
