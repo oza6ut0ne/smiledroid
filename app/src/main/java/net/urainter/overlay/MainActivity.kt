@@ -1,9 +1,11 @@
 package net.urainter.overlay
 
+import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.navigation.findNavController
@@ -43,6 +45,10 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
         })
+
+        if (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0) {
+            WebView.setWebContentsDebuggingEnabled(true)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

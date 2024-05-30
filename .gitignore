@@ -17,3 +17,5 @@ local.properties
 /.idea/deploymentTargetSelector.xml
 keystore.properties
 *.jks
+
+app/src/main/assets/dist

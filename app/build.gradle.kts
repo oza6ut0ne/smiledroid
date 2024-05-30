@@ -117,6 +117,9 @@ dependencies {
     kapt(libs.dagger.hilt.android.compiler)
 
     implementation(libs.timber)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.webkit)
+    implementation(libs.paho.mqtt.android)
 
     debugImplementation(libs.leakcanary.android)
     debugImplementation(libs.hyperion.core)

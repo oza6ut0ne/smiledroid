@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">Smile Overlay</string>
+
+    <string name="dialog_allow_permission_display_over_other_apps">Allow \"Display over other apps\" to %1$s and tap again.</string>
+    <string name="ok">OK</string>
+    <string name="dialog_permission_required_apps">Permission required</string>
+
+    <string name="foreground_notification_channel_id">channel_id_foreground_notification</string>
+    <string name="foreground_notification_channel_name">Foreground Notification</string>
+    <string name="foreground_notification_title">Displaying overlay</string>
+    <string name="foreground_notification_text">Tap here to open application</string>
+
     <string name="action_settings">Settings</string>
     <string name="settings_fragment_label">Settings</string>
 
