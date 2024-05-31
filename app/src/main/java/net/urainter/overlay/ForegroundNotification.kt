@@ -27,14 +27,18 @@ object ForegroundNotification {
             context, 0, Intent(context, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE
         )
 
-        return Notification.Builder(context, channelId)
-            .setAutoCancel(false)
-            .setContentIntent(pendingIntent)
-            .setContentTitle(title)
-            .setContentText(text)
-            .setSmallIcon(android.R.drawable.ic_notification_overlay)
-            .setTicker(context.getText(R.string.app_name))
-            .setWhen(System.currentTimeMillis())
-            .build()
+        return Notification.Builder(context, channelId).apply {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
+            }
+            setOngoing(true)
+            setAutoCancel(false)
+            setContentIntent(pendingIntent)
+            setContentTitle(title)
+            setContentText(text)
+            setSmallIcon(android.R.drawable.ic_notification_overlay)
+            setTicker(context.getText(R.string.app_name))
+            setWhen(System.currentTimeMillis())
+        }.build()
     }
 }
