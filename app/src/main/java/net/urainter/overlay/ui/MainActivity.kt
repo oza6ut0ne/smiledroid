@@ -1,4 +1,4 @@
-package net.urainter.overlay
+package net.urainter.overlay.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,6 +14,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import dagger.hilt.android.AndroidEntryPoint
+import net.urainter.overlay.R
 import net.urainter.overlay.databinding.ActivityMainBinding
 import net.urainter.overlay.di.qualifiers.IsDebuggable
 import javax.inject.Inject

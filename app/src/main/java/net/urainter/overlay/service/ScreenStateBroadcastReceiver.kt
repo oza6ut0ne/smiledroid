@@ -1,9 +1,10 @@
-package net.urainter.overlay
+package net.urainter.overlay.service
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.preference.PreferenceManager
+import net.urainter.overlay.R
 import timber.log.Timber
 
 

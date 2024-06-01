@@ -1,4 +1,4 @@
-package net.urainter.overlay
+package net.urainter.overlay.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -18,6 +18,7 @@ import androidx.webkit.WebViewAssetLoader
 import androidx.webkit.WebViewClientCompat
 import net.urainter.overlay.comment.CommentSchema
 import kotlinx.serialization.json.Json
+import net.urainter.overlay.R
 import timber.log.Timber
 import java.io.File
 import kotlin.random.Random

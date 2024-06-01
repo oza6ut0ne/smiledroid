@@ -1,4 +1,4 @@
-package net.urainter.overlay
+package net.urainter.overlay.ui
 
 import android.webkit.JavascriptInterface
 

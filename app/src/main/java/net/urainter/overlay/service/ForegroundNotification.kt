@@ -1,4 +1,4 @@
-package net.urainter.overlay
+package net.urainter.overlay.service
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -8,6 +8,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
+import net.urainter.overlay.R
+import net.urainter.overlay.ui.MainActivity
 
 object ForegroundNotification {
 

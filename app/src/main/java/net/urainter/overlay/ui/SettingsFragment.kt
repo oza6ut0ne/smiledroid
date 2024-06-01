@@ -1,4 +1,4 @@
-package net.urainter.overlay
+package net.urainter.overlay.ui
 
 import android.os.Bundle
 import android.text.InputType
@@ -11,6 +11,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Lifecycle
 import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
+import net.urainter.overlay.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
     companion object {
@@ -61,10 +62,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_NORMAL
                 editText.doOnTextChanged { text, _, _, _ ->
                     val portNumber = text.toString().toIntOrNull() ?: return@doOnTextChanged
-                    if (portNumber < SettingsFragment.MIN_PORT_NUMBER) {
-                        editText.setText(SettingsFragment.MIN_PORT_NUMBER.toString())
-                    } else if (portNumber > SettingsFragment.MAX_PORT_NUMBER) {
-                        editText.setText(SettingsFragment.MAX_PORT_NUMBER.toString())
+                    if (portNumber < MIN_PORT_NUMBER) {
+                        editText.setText(MIN_PORT_NUMBER.toString())
+                    } else if (portNumber > MAX_PORT_NUMBER) {
+                        editText.setText(MAX_PORT_NUMBER.toString())
                     }
                 }
             }

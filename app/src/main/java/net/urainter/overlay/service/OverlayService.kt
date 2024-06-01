@@ -1,4 +1,4 @@
-package net.urainter.overlay
+package net.urainter.overlay.service
 
 import android.app.Service
 import android.content.Context
@@ -6,9 +6,11 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import androidx.preference.PreferenceManager
+import net.urainter.overlay.R
 import net.urainter.overlay.comment.CommentBroadcastReceiver
 import net.urainter.overlay.comment.source.MqttCommentSource
 import net.urainter.overlay.comment.source.TcpListenerSource
+import net.urainter.overlay.ui.OverlayView
 
 class OverlayService : Service() {
     companion object {
