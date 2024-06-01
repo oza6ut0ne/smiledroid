@@ -1,5 +1,6 @@
 package net.urainter.overlay
 
+import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import android.view.Menu
@@ -12,6 +13,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import net.urainter.overlay.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -40,6 +42,9 @@ class MainActivity : AppCompatActivity() {
                 when (menuItem.itemId) {
                     R.id.action_settings -> {
                         findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.action_SettingsFragment)
+                    }
+                    R.id.action_license -> {
+                        startActivity(Intent(this@MainActivity, OssLicensesMenuActivity::class.java))
                     }
                 }
                 return false

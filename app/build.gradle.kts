@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.jetbrains.kotlin.kapt)
     alias(libs.plugins.dagger.hilt.android)
+    alias(libs.plugins.oss.licenses)
 }
 
 android {
@@ -118,6 +119,7 @@ dependencies {
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.android.compiler)
 
+    implementation(libs.play.services.oss.licenses)
     implementation(libs.timber)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.webkit)
