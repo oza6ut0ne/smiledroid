@@ -61,7 +61,6 @@ class TcpListenerSource(private val onCommentCallback: (rawMessage: String) -> U
                     iter.remove()
 
                     if (key.isAcceptable) {
-                        Timber.i("isAcceptable")
                         handleAccept(key)
                     } else if (key.isReadable) {
                         handleRead(key)

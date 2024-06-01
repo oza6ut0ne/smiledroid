@@ -33,7 +33,7 @@ class MqttCommentSource(context: Context, onCommentCallback: (rawMessage: String
 
         val callback = object : MqttCallbackExtended {
             override fun connectComplete(reconnect: Boolean, serverURI: String) {
-                Timber.i("connectComplete")
+                Timber.i("connectComplete: reconnect = $reconnect")
                 if (reconnect) {
                     subscribeTopic(subscriptionTopic)
                 }
@@ -50,7 +50,11 @@ class MqttCommentSource(context: Context, onCommentCallback: (rawMessage: String
             }
 
             override fun connectionLost(cause: Throwable?) {
-                Timber.i("connectionLost: $cause")
+                if (cause == null) {
+                    Timber.i("connectionLost: null")
+                } else {
+                    Timber.w("connectionLost: $cause")
+                }
             }
         }
         mqttAndroidClient.setCallback(callback)
@@ -74,7 +78,7 @@ class MqttCommentSource(context: Context, onCommentCallback: (rawMessage: String
             }
 
             override fun onFailure(asyncActionToken: IMqttToken, exception: Throwable) {
-                Timber.w("connect onFailure: $asyncActionToken, $exception")
+                Timber.e("connect onFailure: $asyncActionToken, $exception")
             }
         }
     }
@@ -98,7 +102,7 @@ class MqttCommentSource(context: Context, onCommentCallback: (rawMessage: String
             }
 
             override fun onFailure(asyncActionToken: IMqttToken, exception: Throwable) {
-                Timber.w("subscribe onFailure: $asyncActionToken, $exception")
+                Timber.e("subscribe onFailure: $asyncActionToken, $exception")
             }
         })
     }

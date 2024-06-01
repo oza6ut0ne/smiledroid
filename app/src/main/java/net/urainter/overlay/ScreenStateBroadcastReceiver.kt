@@ -7,7 +7,7 @@ import androidx.preference.PreferenceManager
 import timber.log.Timber
 
 
-class ScreenStateBroadcastReceiver(private val overlayView: OverlayView) : BroadcastReceiver() {
+class ScreenStateBroadcastReceiver(private val overlayService: OverlayService) : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         Timber.i("ScreenStateBroadcastReceiver.onReceive(): ${intent?.action}")
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context ?: return)
@@ -22,17 +22,17 @@ class ScreenStateBroadcastReceiver(private val overlayView: OverlayView) : Broad
 
         if (intent?.action == Intent.ACTION_SCREEN_OFF) {
             if (!mqttKeepConnection) {
-                overlayView.mqttCommentSource?.disconnect()
+                overlayService.mqttCommentSource?.disconnect()
             }
             if (!tcpKeepListening) {
-                overlayView.tcpListenerSource?.stop()
+                overlayService.tcpListenerSource?.stop()
             }
         } else if (intent?.action == Intent.ACTION_SCREEN_ON) {
             if (!mqttKeepConnection) {
-                overlayView.mqttCommentSource?.connect()
+                overlayService.mqttCommentSource?.connect()
             }
             if (!tcpKeepListening) {
-                overlayView.tcpListenerSource?.start(context)
+                overlayService.tcpListenerSource?.start(context)
             }
         }
     }
