@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.jetbrains.kotlin.kapt)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
     alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.oss.licenses)
 }
