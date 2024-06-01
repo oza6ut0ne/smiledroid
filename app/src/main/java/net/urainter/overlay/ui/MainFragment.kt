@@ -1,9 +1,7 @@
 package net.urainter.overlay.ui
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
@@ -11,11 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import net.urainter.overlay.service.OverlayService
 import net.urainter.overlay.R
 import net.urainter.overlay.databinding.FragmentMainBinding
+import net.urainter.overlay.service.OverlayService
 
 class MainFragment : Fragment() {
 
@@ -27,11 +24,6 @@ class MainFragment : Fragment() {
 
     private val activityLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { _ ->
-            // nop.
-        }
-
-    private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ ->
             // nop.
         }
 
@@ -53,7 +45,6 @@ class MainFragment : Fragment() {
             setOnCheckedChangeListener { button, isChecked ->
                 if (isChecked) {
                     if (Settings.canDrawOverlays(context)) {
-                        requestNotificationPermission()
                         OverlayService.start(context)
                     } else {
                         button.isChecked = false
@@ -90,22 +81,5 @@ class MainFragment : Fragment() {
             Uri.parse("package:${requireContext().packageName}")
         )
         activityLauncher.launch(intent)
-    }
-
-    private fun requestNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    android.Manifest.permission.POST_NOTIFICATIONS
-                ) ==
-                PackageManager.PERMISSION_GRANTED
-            ) {
-                // nop.
-            } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS)) {
-                // nop.
-            } else {
-                requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
     }
 }

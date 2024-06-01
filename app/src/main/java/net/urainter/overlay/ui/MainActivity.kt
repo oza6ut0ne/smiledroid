@@ -1,12 +1,16 @@
 package net.urainter.overlay.ui
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.webkit.WebView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -29,6 +33,11 @@ class MainActivity : AppCompatActivity() {
     @IsDebuggable
     @JvmField
     var isDebuggable: Boolean = false
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ ->
+            // nop.
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,11 +70,29 @@ class MainActivity : AppCompatActivity() {
         })
 
         WebView.setWebContentsDebuggingEnabled(isDebuggable)
+        requestNotificationPermission()
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
+    }
+
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.POST_NOTIFICATIONS
+                ) ==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                // nop.
+            } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS)) {
+                // nop.
+            } else {
+                requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
     }
 }
