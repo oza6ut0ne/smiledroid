@@ -1,12 +1,16 @@
 package net.urainter.overlay.di
 
+import android.content.Context
+import android.content.pm.ApplicationInfo
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 import dagger.multibindings.Multibinds
 import kotlinx.coroutines.Dispatchers
+import net.urainter.overlay.di.qualifiers.IsDebuggable
 import timber.log.Timber
 import javax.inject.Qualifier
 
@@ -48,6 +52,12 @@ abstract class AppModule {
         @Provides
         fun initMainDispatcher(): () -> Unit = {
             Dispatchers.Main
+        }
+
+        @IsDebuggable
+        @Provides
+        fun provideIsDebuggable(@ApplicationContext context: Context): Boolean {
+            return context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0
         }
     }
 }

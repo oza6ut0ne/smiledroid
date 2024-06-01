@@ -1,7 +1,6 @@
 package net.urainter.overlay
 
 import android.content.Intent
-import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -14,12 +13,21 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import dagger.hilt.android.AndroidEntryPoint
 import net.urainter.overlay.databinding.ActivityMainBinding
+import net.urainter.overlay.di.qualifiers.IsDebuggable
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+
+    @Inject
+    @IsDebuggable
+    @JvmField
+    var isDebuggable: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,9 +59,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        if (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0) {
-            WebView.setWebContentsDebuggingEnabled(true)
-        }
+        WebView.setWebContentsDebuggingEnabled(isDebuggable)
     }
 
     override fun onSupportNavigateUp(): Boolean {
