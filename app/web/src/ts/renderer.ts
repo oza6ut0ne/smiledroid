@@ -268,6 +268,18 @@ function getCommentAnimations(): Animation[] {
     });
 }
 
+export function togglePause() {
+    if (isPause) {
+        isPause = false;
+        getCommentAnimations().forEach(a => a.play());
+        flashWindow(255, 255, 0, 0.15, 0.75);
+    } else {
+        isPause = true;
+        getCommentAnimations().forEach(a => a.pause());
+        flashWindow(0, 255, 255, 0.15, 0.75);
+    }
+}
+
 function setupIpcHandlers(defaultDuration: number) {
     Api.onCommentReceived(handleComment);
     Api.onDurationUpdated((duration) => {
@@ -283,18 +295,7 @@ function setupIpcHandlers(defaultDuration: number) {
         durationPerDisplayMsec = duration;
     });
 
-    Api.onTogglePause(() => {
-        if (isPause) {
-            isPause = false;
-            getCommentAnimations().forEach(a => a.play());
-            flashWindow(255, 255, 0, 0.15, 0.75);
-        } else {
-            isPause = true;
-            getCommentAnimations().forEach(a => a.pause());
-            flashWindow(0, 255, 255, 0.15, 0.75);
-        }
-    });
-
+    Api.onTogglePause(togglePause);
     Api.onUpdateNewlineEnabled((isEnabled) => newlineEnabled = isEnabled);
     Api.onUpdateIconEnabled((isEnabled) => iconEnabled = isEnabled);
     Api.onUpdateInlineImgEnabled((isEnabled) => inlineImgEnabled = isEnabled);
