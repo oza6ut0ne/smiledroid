@@ -13,8 +13,36 @@
 
     <fragment
         android:id="@+id/SettingsFragment"
-        android:name="net.urainter.overlay.ui.SettingsFragment"
-        android:label="@string/settings_fragment_label" />
+        android:name="net.urainter.overlay.ui.setting.SettingsFragment"
+        android:label="@string/settings_fragment_label">
+
+        <action
+            android:id="@+id/action_SettingsFragment_to_BasicSettingsFragment"
+            app:destination="@id/BasicSettingsFragment" />
+
+        <action
+            android:id="@+id/action_SettingsFragment_to_MqttSettingsFragment"
+            app:destination="@id/MqttSettingsFragment" />
+
+        <action
+            android:id="@+id/action_SettingsFragment_to_TcpListenerSettingsFragment"
+            app:destination="@id/TcpListenerSettingsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/BasicSettingsFragment"
+        android:name="net.urainter.overlay.ui.setting.BasicSettingsFragment"
+        android:label="@string/basic_settings_fragment_label" />
+
+    <fragment
+        android:id="@+id/MqttSettingsFragment"
+        android:name="net.urainter.overlay.ui.setting.MqttSettingsFragment"
+        android:label="@string/mqtt_settings_fragment_label" />
+
+    <fragment
+        android:id="@+id/TcpListenerSettingsFragment"
+        android:name="net.urainter.overlay.ui.setting.TcpListenerSettingsFragment"
+        android:label="@string/tcp_settings_fragment_label" />
 
     <action
         android:id="@+id/action_SettingsFragment"

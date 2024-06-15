@@ -14,11 +14,11 @@ class ScreenStateBroadcastReceiver(private val overlayService: OverlayService) :
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context ?: return)
         val mqttKeepConnection = sharedPreferences.getBoolean(
             context.getString(R.string.key_mqtt_keep_connection_while_screen_is_off),
-            false
+            context.getString(R.string.default_key_mqtt_keep_connection_while_screen_is_off).toBooleanStrict()
         )
         val tcpKeepListening = sharedPreferences.getBoolean(
             context.getString(R.string.key_tcp_keep_listening_while_screen_is_off),
-            false
+            context.getString(R.string.default_key_tcp_keep_listening_while_screen_is_off).toBooleanStrict()
         )
 
         if (intent?.action == Intent.ACTION_SCREEN_OFF) {

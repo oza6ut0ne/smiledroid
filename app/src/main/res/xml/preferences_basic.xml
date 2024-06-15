@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory android:title="@string/preference_category_basic">
+        <EditTextPreference
+            android:defaultValue="@string/default_key_basic_duration"
+            android:key="@string/key_basic_duration"
+            android:title="@string/preference_duration"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:defaultValue="@string/default_key_basic_text_color_style"
+            android:key="@string/key_basic_text_color_style"
+            android:title="@string/preference_text_color_style"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:defaultValue="@string/default_key_basic_text_stroke_style"
+            android:key="@string/key_basic_text_stroke_style"
+            android:title="@string/preference_text_stroke_style"
+            app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreference
+            android:defaultValue="@string/default_key_basic_newline_enabled"
+            android:key="@string/key_basic_newline_enabled"
+            android:title="@string/preference_newline_enabled" />
+
+        <SwitchPreference
+            android:defaultValue="@string/default_key_basic_icon_enabled"
+            android:key="@string/key_basic_icon_enabled"
+            android:title="@string/preference_icon_enabled" />
+
+        <SwitchPreference
+            android:defaultValue="@string/default_key_basic_inline_img_enabled"
+            android:key="@string/key_basic_inline_img_enabled"
+            android:title="@string/preference_inline_img_enabled" />
+
+        <SwitchPreference
+            android:defaultValue="@string/default_key_basic_img_enabled"
+            android:key="@string/key_basic_img_enabled"
+            android:title="@string/preference_img_enabled" />
+
+        <SwitchPreference
+            android:dependency="@string/key_basic_hardware_acceleration_enabled"
+            android:defaultValue="@string/default_key_basic_video_enabled"
+            android:key="@string/key_basic_video_enabled"
+            android:title="@string/preference_video_enabled" />
+
+        <SwitchPreference
+            android:defaultValue="@string/default_key_basic_round_icon_enabled"
+            android:key="@string/key_basic_round_icon_enabled"
+            android:title="@string/preference_round_icon_enabled" />
+
+        <SwitchPreference
+            android:defaultValue="@string/default_key_basic_hardware_acceleration_enabled"
+            android:key="@string/key_basic_hardware_acceleration_enabled"
+            android:title="@string/preference_hardware_acceleration_enabled" />
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

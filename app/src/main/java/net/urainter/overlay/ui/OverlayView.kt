@@ -14,6 +14,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.widget.FrameLayout
+import androidx.preference.PreferenceManager
 import androidx.webkit.WebViewAssetLoader
 import androidx.webkit.WebViewClientCompat
 import net.urainter.overlay.comment.CommentSchema
@@ -72,10 +73,18 @@ class OverlayView @JvmOverloads constructor(
             )
             .build()
 
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val hardwareAccelerationEnabled = sharedPreferences.getBoolean(
+            context.getString(R.string.key_basic_hardware_acceleration_enabled),
+            context.getString(R.string.default_key_basic_hardware_acceleration_enabled).toBooleanStrict()
+        )
+        val layerType = if (hardwareAccelerationEnabled) View.LAYER_TYPE_HARDWARE else View.LAYER_TYPE_SOFTWARE
+
         webView = findViewById<WebView>(R.id.web_view).apply {
+            setLayerType(layerType, null)
             setBackgroundColor(Color.TRANSPARENT)
             settings.javaScriptEnabled = true
-            addJavascriptInterface(JsObject, JsObject.JS_NAME)
+            addJavascriptInterface(JsObject(context), JsObject.JS_NAME)
             webViewClient = object : WebViewClientCompat() {
                 override fun shouldInterceptRequest(
                     view: WebView?,

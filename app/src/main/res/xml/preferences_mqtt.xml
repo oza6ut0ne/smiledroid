@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory android:title="@string/preference_category_mqtt">
+        <SwitchPreference
+            android:defaultValue="@string/default_key_mqtt_enabled"
+            android:key="@string/key_mqtt_enabled"
+            android:title="@string/preference_enable_mqtt" />
+
+        <EditTextPreference
+            android:dependency="@string/key_mqtt_enabled"
+            android:key="@string/key_mqtt_url"
+            android:title="@string/preference_server_uri"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:dependency="@string/key_mqtt_enabled"
+            android:key="@string/key_mqtt_topic"
+            android:title="@string/preference_topic"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:dependency="@string/key_mqtt_enabled"
+            android:key="@string/key_mqtt_username"
+            android:title="@string/preference_username"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:dependency="@string/key_mqtt_enabled"
+            android:key="@string/key_mqtt_password"
+            android:title="@string/preference_password" />
+
+        <SwitchPreference
+            android:defaultValue="@string/default_key_mqtt_keep_connection_while_screen_is_off"
+            android:dependency="@string/key_mqtt_enabled"
+            android:key="@string/key_mqtt_keep_connection_while_screen_is_off"
+            android:title="@string/preference_keep_connection_while_screen_is_off" />
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

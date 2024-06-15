@@ -80,14 +80,22 @@ class OverlayService : Service() {
 
     private fun startCommentSources() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        if (sharedPreferences.getBoolean(getString(R.string.key_mqtt_enabled), false)) {
+        if (sharedPreferences.getBoolean(
+                getString(R.string.key_mqtt_enabled),
+                getString(R.string.default_key_mqtt_enabled).toBooleanStrict()
+            )
+        ) {
             mqttCommentSource =
                 MqttCommentSource(this) { overlayView.showComment(it) }.apply {
                     connect()
                 }
         }
 
-        if (sharedPreferences.getBoolean(getString(R.string.key_tcp_enabled), false)) {
+        if (sharedPreferences.getBoolean(
+                getString(R.string.key_tcp_enabled),
+                getString(R.string.default_key_tcp_enabled).toBooleanStrict()
+            )
+        ) {
             tcpListenerSource =
                 TcpListenerSource { overlayView.showComment(it) }.apply {
                     start(this@OverlayService)
