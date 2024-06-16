@@ -7,6 +7,7 @@ import android.content.Intent
 
 class CommentBroadcastReceiver(private val onCommentCallback: (rawMessage: String) -> Unit) :
     BroadcastReceiver() {
+
     companion object {
         const val ACTION_NAME = "POST_COMMENT"
         const val EXTRA_NAME = "comment"

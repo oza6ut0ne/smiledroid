@@ -63,6 +63,11 @@ class OverlayView @JvmOverloads constructor(
     @SuppressLint("SetJavaScriptEnabled")
     override fun onFinishInflate() {
         super.onFinishInflate()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            layoutParams.alpha =
+                (context.getSystemService(Context.INPUT_SERVICE) as InputManager).maximumObscuringOpacityForTouch
+        }
+
         val webViewCacheDir = File(context.cacheDir, WEB_VIEW_CACHE_DIR_NAME).apply { mkdirs() }
         val assetLoader = WebViewAssetLoader.Builder()
             .addPathHandler(ASSETS_PATH, WebViewAssetLoader.AssetsPathHandler(context))
@@ -76,9 +81,11 @@ class OverlayView @JvmOverloads constructor(
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val hardwareAccelerationEnabled = sharedPreferences.getBoolean(
             context.getString(R.string.key_basic_hardware_acceleration_enabled),
-            context.getString(R.string.default_key_basic_hardware_acceleration_enabled).toBooleanStrict()
+            context.getString(R.string.default_key_basic_hardware_acceleration_enabled)
+                .toBooleanStrict()
         )
-        val layerType = if (hardwareAccelerationEnabled) View.LAYER_TYPE_HARDWARE else View.LAYER_TYPE_SOFTWARE
+        val layerType =
+            if (hardwareAccelerationEnabled) View.LAYER_TYPE_HARDWARE else View.LAYER_TYPE_SOFTWARE
 
         webView = findViewById<WebView>(R.id.web_view).apply {
             setLayerType(layerType, null)
@@ -114,13 +121,13 @@ class OverlayView @JvmOverloads constructor(
         webView.run { post { evaluateJavascript(script, null) } }
     }
 
+    fun togglePause() {
+        webView.run { post { evaluateJavascript("main.togglePause()", null) } }
+    }
+
     @Synchronized
-    fun show(context: Context) {
+    fun show() {
         if (!isShown) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                layoutParams.alpha =
-                    (context.getSystemService(Context.INPUT_SERVICE) as InputManager).maximumObscuringOpacityForTouch
-            }
             windowManager.addView(this, layoutParams)
         }
     }

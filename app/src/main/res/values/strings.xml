@@ -9,6 +9,10 @@
     <string name="foreground_notification_channel_name">Foreground Notification</string>
     <string name="foreground_notification_title">Displaying overlay</string>
     <string name="foreground_notification_text">Tap here to open application</string>
+    <string name="foreground_notification_action_pause">PAUSE</string>
+    <string name="foreground_notification_action_unpause">UNPAUSE</string>
+    <string name="foreground_notification_action_show">SHOW</string>
+    <string name="foreground_notification_action_hide">HIDE</string>
 
     <string name="action_settings">Settings</string>
     <string name="action_license">OSS License</string>

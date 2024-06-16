@@ -4,7 +4,6 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Build
 import androidx.preference.PreferenceManager
 import net.urainter.overlay.R
 import net.urainter.overlay.comment.CommentBroadcastReceiver
@@ -35,17 +34,26 @@ class OverlayService : Service() {
     }
 
     private lateinit var overlayView: OverlayView
+    private var foregroundNotificationBroadcastReceiver: ForegroundNotificationBroadcastReceiver? =
+        null
     private var commentBroadcastReceiver: CommentBroadcastReceiver? = null
     private var screenBroadcastReceiver: ScreenStateBroadcastReceiver? = null
     var mqttCommentSource: MqttCommentSource? = null
     var tcpListenerSource: TcpListenerSource? = null
 
     override fun onCreate() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notification = ForegroundNotification.build(this)
-            startForeground(1, notification)
-        }
+        val notification = ForegroundNotification.build(this)
+        startForeground(ForegroundNotification.NOTIFICATION_ID, notification)
         overlayView = OverlayView.create(this)
+        foregroundNotificationBroadcastReceiver =
+            ForegroundNotificationBroadcastReceiver(this).also { receiver ->
+                val filter = IntentFilter().apply {
+                    addAction("${this@OverlayService.packageName}.${ForegroundNotificationBroadcastReceiver.ACTION_TOGGLE_PAUSE}")
+                    addAction("${this@OverlayService.packageName}.${ForegroundNotificationBroadcastReceiver.ACTION_SHOW}")
+                    addAction("${this@OverlayService.packageName}.${ForegroundNotificationBroadcastReceiver.ACTION_HIDE}")
+                }
+                registerReceiver(receiver, filter)
+            }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -53,7 +61,7 @@ class OverlayService : Service() {
             when (it.action) {
                 ACTION_START -> {
                     isActive = true
-                    overlayView.show(this)
+                    overlayView.show()
                     startCommentSources()
                 }
 
@@ -74,6 +82,7 @@ class OverlayService : Service() {
             overlayView.hide()
             shutdownCommentSources()
         }
+        foregroundNotificationBroadcastReceiver?.let { unregisterReceiver(it) }
     }
 
     override fun onBind(intent: Intent?) = null
@@ -127,5 +136,29 @@ class OverlayService : Service() {
         mqttCommentSource = null
         tcpListenerSource?.stop()
         tcpListenerSource = null
+    }
+
+    fun togglePause() {
+        overlayView.togglePause()
+        val notification = ForegroundNotification.togglePause(this)
+        startForeground(ForegroundNotification.NOTIFICATION_ID, notification)
+    }
+
+    fun show() {
+        if (overlayView.isShown) {
+            return
+        }
+        overlayView.show()
+        val notification = ForegroundNotification.toggleShown(this)
+        startForeground(ForegroundNotification.NOTIFICATION_ID, notification)
+    }
+
+    fun hide() {
+        if (!overlayView.isShown) {
+            return
+        }
+        overlayView.hide()
+        val notification = ForegroundNotification.toggleShown(this)
+        startForeground(ForegroundNotification.NOTIFICATION_ID, notification)
     }
 }
