@@ -29,7 +29,7 @@ object ForegroundNotification {
         NotificationManagerCompat.from(context).createNotificationChannel(
             NotificationChannelCompat.Builder(
                 channelId,
-                NotificationManagerCompat.IMPORTANCE_DEFAULT
+                NotificationManagerCompat.IMPORTANCE_HIGH
             ).setName(channelName).build()
         )
 
