@@ -180,6 +180,11 @@ task("buildWeb") {
     doFirst {
         exec {
             workingDir = File(projectDir, "web")
+            commandLine("npm", "install")
+        }
+
+        exec {
+            workingDir = File(projectDir, "web")
             commandLine("npm", "run", npmCommand)
         }
     }
