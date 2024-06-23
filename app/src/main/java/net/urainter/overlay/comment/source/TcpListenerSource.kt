@@ -87,7 +87,7 @@ class TcpListenerSource(private val onCommentCallback: (rawMessage: String) -> U
     private fun handleRead(key: SelectionKey) {
         try {
             val socketChannel = key.channel() as SocketChannel
-            val buf = ByteBuffer.allocate(10)
+            val buf = ByteBuffer.allocate(1024)
             val read = socketChannel.read(buf)
             val data = (key.attachment() as ByteArray) + buf.array()
                 .sliceArray(0..<buf.position())
