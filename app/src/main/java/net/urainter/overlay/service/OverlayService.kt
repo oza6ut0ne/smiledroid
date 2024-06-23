@@ -4,6 +4,9 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceManager
 import net.urainter.overlay.R
 import net.urainter.overlay.comment.CommentBroadcastReceiver
@@ -15,17 +18,27 @@ class OverlayService : Service() {
     companion object {
         private const val ACTION_START = "START"
         private const val ACTION_STOP = "STOP"
-        var isActive = false
-            private set
+        private val _isActive = MutableLiveData(false)
+        val isActive: LiveData<Boolean>
+            get() = _isActive
 
         fun start(context: Context) {
+            if (isActive.value == true) {
+                return
+            }
             val intent = Intent(context, OverlayService::class.java).apply {
                 action = ACTION_START
             }
-            context.startService(intent)
+            when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> context.startForegroundService(intent)
+                else -> context.startService(intent)
+            }
         }
 
         fun stop(context: Context) {
+            if (isActive.value == false) {
+                return
+            }
             val intent = Intent(context, OverlayService::class.java).apply {
                 action = ACTION_STOP
             }
@@ -34,8 +47,7 @@ class OverlayService : Service() {
     }
 
     private lateinit var overlayView: OverlayView
-    private var foregroundNotificationBroadcastReceiver: ForegroundNotificationBroadcastReceiver? =
-        null
+    private var foregroundNotificationBroadcastReceiver: ForegroundNotificationBroadcastReceiver? = null
     private var commentBroadcastReceiver: CommentBroadcastReceiver? = null
     private var screenBroadcastReceiver: ScreenStateBroadcastReceiver? = null
     var mqttCommentSource: MqttCommentSource? = null
@@ -60,13 +72,13 @@ class OverlayService : Service() {
         intent?.let {
             when (it.action) {
                 ACTION_START -> {
-                    isActive = true
+                    _isActive.value = true
                     overlayView.show()
                     startCommentSources()
                 }
 
                 ACTION_STOP -> {
-                    isActive = false
+                    _isActive.value = false
                     overlayView.hide()
                     shutdownCommentSources()
                     stopSelf()
@@ -77,8 +89,8 @@ class OverlayService : Service() {
     }
 
     override fun onDestroy() {
-        if (isActive) {
-            isActive = false
+        if (isActive.value == true) {
+            _isActive.value = false
             overlayView.hide()
             shutdownCommentSources()
         }
@@ -94,10 +106,9 @@ class OverlayService : Service() {
                 getString(R.string.default_key_mqtt_enabled).toBooleanStrict()
             )
         ) {
-            mqttCommentSource =
-                MqttCommentSource(this) { overlayView.showComment(it) }.apply {
-                    connect()
-                }
+            mqttCommentSource = MqttCommentSource(this) { overlayView.showComment(it) }.apply {
+                connect()
+            }
         }
 
         if (sharedPreferences.getBoolean(
@@ -105,10 +116,9 @@ class OverlayService : Service() {
                 getString(R.string.default_key_tcp_enabled).toBooleanStrict()
             )
         ) {
-            tcpListenerSource =
-                TcpListenerSource { overlayView.showComment(it) }.apply {
-                    start(this@OverlayService)
-                }
+            tcpListenerSource = TcpListenerSource { overlayView.showComment(it) }.apply {
+                start(this@OverlayService)
+            }
         }
 
         commentBroadcastReceiver =
@@ -131,7 +141,9 @@ class OverlayService : Service() {
 
     private fun shutdownCommentSources() {
         commentBroadcastReceiver?.let { unregisterReceiver(it) }
+        commentBroadcastReceiver = null
         screenBroadcastReceiver?.let { unregisterReceiver(it) }
+        screenBroadcastReceiver = null
         mqttCommentSource?.disconnect()
         mqttCommentSource = null
         tcpListenerSource?.stop()
@@ -148,17 +160,17 @@ class OverlayService : Service() {
         if (overlayView.isShown) {
             return
         }
-        overlayView.show()
         val notification = ForegroundNotification.toggleShown(this)
         startForeground(ForegroundNotification.NOTIFICATION_ID, notification)
+        overlayView.show()
     }
 
     fun hide() {
         if (!overlayView.isShown) {
             return
         }
-        overlayView.hide()
         val notification = ForegroundNotification.toggleShown(this)
         startForeground(ForegroundNotification.NOTIFICATION_ID, notification)
+        overlayView.hide()
     }
 }

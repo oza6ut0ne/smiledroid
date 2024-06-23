@@ -39,9 +39,11 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        OverlayService.isActive.observe(viewLifecycleOwner) {
+            binding.toggleButton.isChecked = it
+        }
 
-        binding.buttonFirst.apply {
-            isChecked = OverlayService.isActive
+        binding.toggleButton.apply {
             setOnCheckedChangeListener { button, isChecked ->
                 if (isChecked) {
                     if (Settings.canDrawOverlays(context)) {

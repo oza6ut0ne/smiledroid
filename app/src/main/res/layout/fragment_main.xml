@@ -7,7 +7,7 @@
     tools:context=".ui.MainFragment">
 
     <ToggleButton
-        android:id="@+id/button_first"
+        android:id="@+id/toggle_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
