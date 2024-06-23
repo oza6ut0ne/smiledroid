@@ -60,10 +60,9 @@ class TcpListenerSource(private val onCommentCallback: (rawMessage: String) -> U
                     val key = iter.next() as SelectionKey
                     iter.remove()
 
-                    if (key.isAcceptable) {
-                        handleAccept(key)
-                    } else if (key.isReadable) {
-                        handleRead(key)
+                    when {
+                        key.isAcceptable -> handleAccept(key)
+                        key.isReadable -> handleRead(key)
                     }
                 }
             }
@@ -89,8 +88,7 @@ class TcpListenerSource(private val onCommentCallback: (rawMessage: String) -> U
             val socketChannel = key.channel() as SocketChannel
             val buf = ByteBuffer.allocate(1024)
             val read = socketChannel.read(buf)
-            val data = (key.attachment() as ByteArray) + buf.array()
-                .sliceArray(0..<buf.position())
+            val data = (key.attachment() as ByteArray) + buf.array().sliceArray(0..<buf.position())
             if (read < 0) {
                 socketChannel.close()
                 val rawMessage = String(data)

@@ -41,16 +41,14 @@ class BasicSettingsFragment : PreferenceFragmentCompat() {
         ).forEach { resId ->
             findPreference<EditTextPreference?>(getString(resId))?.run {
                 setOnBindEditTextListener { editText ->
-                    editText.inputType =
-                        InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_NORMAL
+                    editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_NORMAL
                 }
             }
         }
 
         findPreference<EditTextPreference?>(getString(R.string.key_basic_duration))?.run {
             setOnBindEditTextListener { editText ->
-                editText.inputType =
-                    InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_NORMAL
+                editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_NORMAL
                 editText.doOnTextChanged { text, _, _, _ ->
                     val duration = text.toString().toLongOrNull() ?: return@doOnTextChanged
                     if (duration < MIN_DURATION) {

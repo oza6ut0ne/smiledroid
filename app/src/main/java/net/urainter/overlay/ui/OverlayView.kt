@@ -26,13 +26,12 @@ import kotlin.random.Random
 
 
 class OverlayView @JvmOverloads constructor(
-    ctx: Context,
+    context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0
-) : FrameLayout(ctx, attrs, defStyle) {
+) : FrameLayout(context, attrs, defStyle) {
     companion object {
-        private const val HTML_URL =
-            "https://appassets.androidplatform.net/assets/dist/html/index.html"
+        private const val HTML_URL = "https://appassets.androidplatform.net/assets/dist/html/index.html"
         private const val WEB_VIEW_CACHE_DIR_NAME = "web_cache"
         private const val ASSETS_PATH = "/assets/"
         private const val RESOURCES_PATH = "/res/"
@@ -44,10 +43,7 @@ class OverlayView @JvmOverloads constructor(
     }
 
     private lateinit var webView: WebView
-
-    private val windowManager: WindowManager =
-        ctx.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-
+    private val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     private val layoutParams = WindowManager.LayoutParams(
         when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
@@ -60,7 +56,6 @@ class OverlayView @JvmOverloads constructor(
         PixelFormat.TRANSLUCENT
     )
 
-    @SuppressLint("SetJavaScriptEnabled")
     override fun onFinishInflate() {
         super.onFinishInflate()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -81,22 +76,21 @@ class OverlayView @JvmOverloads constructor(
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val hardwareAccelerationEnabled = sharedPreferences.getBoolean(
             context.getString(R.string.key_basic_hardware_acceleration_enabled),
-            context.getString(R.string.default_key_basic_hardware_acceleration_enabled)
-                .toBooleanStrict()
+            context.getString(R.string.default_key_basic_hardware_acceleration_enabled).toBooleanStrict()
         )
-        val layerType =
-            if (hardwareAccelerationEnabled) View.LAYER_TYPE_HARDWARE else View.LAYER_TYPE_SOFTWARE
+        val layerType = when (hardwareAccelerationEnabled) {
+            true -> View.LAYER_TYPE_HARDWARE
+            false -> View.LAYER_TYPE_SOFTWARE
+        }
 
+        @SuppressLint("SetJavaScriptEnabled")
         webView = findViewById<WebView>(R.id.web_view).apply {
             setLayerType(layerType, null)
             setBackgroundColor(Color.TRANSPARENT)
             settings.javaScriptEnabled = true
             addJavascriptInterface(JsObject(context), JsObject.JS_NAME)
             webViewClient = object : WebViewClientCompat() {
-                override fun shouldInterceptRequest(
-                    view: WebView?,
-                    request: WebResourceRequest
-                ): WebResourceResponse? {
+                override fun shouldInterceptRequest(view: WebView?, request: WebResourceRequest): WebResourceResponse? {
                     return assetLoader.shouldInterceptRequest(request.url)
                 }
             }

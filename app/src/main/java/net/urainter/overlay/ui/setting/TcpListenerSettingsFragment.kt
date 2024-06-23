@@ -47,15 +47,13 @@ class TcpListenerSettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<EditTextPreference?>(getString(R.string.key_tcp_bind_address))?.run {
             setOnBindEditTextListener { editText ->
-                editText.inputType =
-                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_NORMAL
+                editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_NORMAL
             }
         }
 
         findPreference<EditTextPreference?>(getString(R.string.key_tcp_listen_port))?.run {
             setOnBindEditTextListener { editText ->
-                editText.inputType =
-                    InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_NORMAL
+                editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_NORMAL
                 editText.doOnTextChanged { text, _, _, _ ->
                     val portNumber = text.toString().toIntOrNull() ?: return@doOnTextChanged
                     if (portNumber < MIN_PORT_NUMBER) {

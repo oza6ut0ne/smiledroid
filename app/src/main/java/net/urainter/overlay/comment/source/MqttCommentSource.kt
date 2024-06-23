@@ -21,15 +21,11 @@ class MqttCommentSource(context: Context, onCommentCallback: (rawMessage: String
     init {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val serverUri = sharedPreferences.getString(context.getString(R.string.key_mqtt_url), "") ?: ""
-        val mqttUsername =
-            sharedPreferences.getString(context.getString(R.string.key_mqtt_username), null)
-        val mqttPassword =
-            sharedPreferences.getString(context.getString(R.string.key_mqtt_password), null)
+        val mqttUsername = sharedPreferences.getString(context.getString(R.string.key_mqtt_username), null)
+        val mqttPassword = sharedPreferences.getString(context.getString(R.string.key_mqtt_password), null)
         val clientId = "${context.getString(R.string.app_name)}-${System.currentTimeMillis()}"
-        val subscriptionTopic =
-            sharedPreferences.getString(context.getString(R.string.key_mqtt_topic), "") ?: ""
-        mqttAndroidClient =
-            MqttAndroidClient(context.applicationContext, serverUri, clientId)
+        val subscriptionTopic = sharedPreferences.getString(context.getString(R.string.key_mqtt_topic), "") ?: ""
+        mqttAndroidClient = MqttAndroidClient(context.applicationContext, serverUri, clientId)
 
         val callback = object : MqttCallbackExtended {
             override fun connectComplete(reconnect: Boolean, serverURI: String) {

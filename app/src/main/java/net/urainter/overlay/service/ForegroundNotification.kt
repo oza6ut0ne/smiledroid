@@ -27,10 +27,9 @@ object ForegroundNotification {
         val text = context.getString(R.string.foreground_notification_text)
 
         NotificationManagerCompat.from(context).createNotificationChannel(
-            NotificationChannelCompat.Builder(
-                channelId,
-                NotificationManagerCompat.IMPORTANCE_HIGH
-            ).setName(channelName).build()
+            NotificationChannelCompat.Builder(channelId, NotificationManagerCompat.IMPORTANCE_HIGH)
+                .setName(channelName)
+                .build()
         )
 
         val mainActivityPendingIntent = PendingIntent.getActivity(
@@ -40,10 +39,9 @@ object ForegroundNotification {
             PendingIntent.FLAG_IMMUTABLE
         )
 
-        val pauseActionTitle = if (isPause) {
-            context.getString(R.string.foreground_notification_action_unpause)
-        } else {
-            context.getString(R.string.foreground_notification_action_pause)
+        val pauseActionTitle = when (isPause) {
+            true -> context.getString(R.string.foreground_notification_action_unpause)
+            false -> context.getString(R.string.foreground_notification_action_pause)
         }
         val togglePauseAction = createBroadcastAction(
             context,
@@ -92,8 +90,7 @@ object ForegroundNotification {
         title: String
     ): NotificationCompat.Action {
         val intent = Intent().apply {
-            action =
-                "${context.packageName}.$name"
+            action = "${context.packageName}.$name"
         }
         val pendingIntent =
             PendingIntent.getBroadcast(

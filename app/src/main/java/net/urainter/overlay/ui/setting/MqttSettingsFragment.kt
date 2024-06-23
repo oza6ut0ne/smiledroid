@@ -46,16 +46,14 @@ class MqttSettingsFragment : PreferenceFragmentCompat() {
         ).forEach { resId ->
             findPreference<EditTextPreference?>(getString(resId))?.run {
                 setOnBindEditTextListener { editText ->
-                    editText.inputType =
-                        InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_NORMAL
+                    editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_NORMAL
                 }
             }
         }
 
         findPreference<EditTextPreference?>(getString(R.string.key_mqtt_password))?.run {
             setOnBindEditTextListener { editText ->
-                editText.inputType =
-                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             }
         }
     }
