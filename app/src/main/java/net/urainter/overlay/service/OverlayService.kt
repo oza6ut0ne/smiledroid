@@ -64,7 +64,11 @@ class OverlayService : Service() {
                     addAction("${this@OverlayService.packageName}.${ForegroundNotificationBroadcastReceiver.ACTION_SHOW}")
                     addAction("${this@OverlayService.packageName}.${ForegroundNotificationBroadcastReceiver.ACTION_HIDE}")
                 }
-                registerReceiver(receiver, filter)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    registerReceiver(receiver, filter, RECEIVER_EXPORTED)
+                } else {
+                    registerReceiver(receiver, filter)
+                }
             }
     }
 
@@ -126,7 +130,11 @@ class OverlayService : Service() {
                 val filter = IntentFilter().apply {
                     addAction("${this@OverlayService.packageName}.${CommentBroadcastReceiver.ACTION_NAME}")
                 }
-                registerReceiver(receiver, filter)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    registerReceiver(receiver, filter, RECEIVER_EXPORTED)
+                } else {
+                    registerReceiver(receiver, filter)
+                }
             }
 
         screenBroadcastReceiver =
