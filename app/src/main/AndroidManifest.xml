@@ -44,7 +44,9 @@
 
         <service
             android:name=".service.OverlayService"
-            android:foregroundServiceType="remoteMessaging" />
+            android:exported="true"
+            android:foregroundServiceType="remoteMessaging"
+            tools:ignore="ExportedService" />
 
         <service
             android:name=".service.QuickToggleService"
