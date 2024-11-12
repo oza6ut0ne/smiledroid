@@ -76,15 +76,19 @@ class OverlayService : Service() {
         intent?.let {
             when (it.action) {
                 ACTION_START -> {
-                    _isActive.value = true
-                    overlayView.show()
-                    startCommentSources()
+                    if (isActive.value == false) {
+                        _isActive.value = true
+                        overlayView.show()
+                        startCommentSources()
+                    }
                 }
 
                 ACTION_STOP -> {
-                    _isActive.value = false
-                    overlayView.hide()
-                    shutdownCommentSources()
+                    if (isActive.value == true) {
+                        _isActive.value = false
+                        overlayView.hide()
+                        shutdownCommentSources()
+                    }
                     stopSelf()
                 }
             }
