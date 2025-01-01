@@ -63,16 +63,19 @@
     <string name="preference_enable_mqtt">Enable MQTT</string>
     <string name="preference_server_uri">Server URI</string>
     <string name="preference_topic">Topic</string>
+    <string name="preference_qos">QoS</string>
     <string name="preference_username">Username</string>
     <string name="preference_password">Password</string>
     <string name="preference_keep_connection_while_screen_is_off">Keep connection while screen is off</string>
     <string name="key_mqtt_enabled">mqttEnabled</string>
     <string name="key_mqtt_url">mqttUrl</string>
     <string name="key_mqtt_topic">mqttTopic</string>
+    <string name="key_mqtt_qos">mqttQos</string>
     <string name="key_mqtt_username">mqttUsername</string>
     <string name="key_mqtt_password">mqttPassword</string>
     <string name="key_mqtt_keep_connection_while_screen_is_off">mqttKeepConnectionWhileScreenIsOff</string>
     <string name="default_key_mqtt_enabled">false</string>
+    <string name="default_key_mqtt_qos">0</string>
     <string name="default_key_mqtt_keep_connection_while_screen_is_off">false</string>
 
     <string name="tcp_settings_fragment_label">TCP Listener Settings</string>

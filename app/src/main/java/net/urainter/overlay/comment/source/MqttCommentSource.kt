@@ -25,13 +25,18 @@ class MqttCommentSource(context: Context, onCommentCallback: (rawMessage: String
         val mqttPassword = sharedPreferences.getString(context.getString(R.string.key_mqtt_password), null)
         val clientId = "${context.getString(R.string.app_name)}-${System.currentTimeMillis()}"
         val subscriptionTopic = sharedPreferences.getString(context.getString(R.string.key_mqtt_topic), "") ?: ""
+        val defaultQos = context.getString(R.string.default_key_mqtt_qos)
+        val qos = (sharedPreferences.getString(
+            context.getString(R.string.key_mqtt_qos),
+            defaultQos
+        ) ?: defaultQos).toIntOrNull() ?: defaultQos.toInt()
         mqttAndroidClient = MqttAndroidClient(context.applicationContext, serverUri, clientId)
 
         val callback = object : MqttCallbackExtended {
             override fun connectComplete(reconnect: Boolean, serverURI: String) {
                 Timber.i("connectComplete: reconnect = $reconnect")
                 if (reconnect) {
-                    subscribeTopic(subscriptionTopic)
+                    subscribeTopic(subscriptionTopic, qos)
                 }
             }
 
@@ -70,7 +75,7 @@ class MqttCommentSource(context: Context, onCommentCallback: (rawMessage: String
                 disconnectedBufferOptions.isPersistBuffer = false
                 disconnectedBufferOptions.isDeleteOldestMessages = false
                 mqttAndroidClient.setBufferOpts(disconnectedBufferOptions)
-                subscribeTopic(subscriptionTopic)
+                subscribeTopic(subscriptionTopic, qos)
             }
 
             override fun onFailure(asyncActionToken: IMqttToken, exception: Throwable) {
@@ -91,8 +96,8 @@ class MqttCommentSource(context: Context, onCommentCallback: (rawMessage: String
         }
     }
 
-    fun subscribeTopic(topic: String) {
-        mqttAndroidClient.subscribe(topic, 0, null, object : IMqttActionListener {
+    private fun subscribeTopic(topic: String, qos: Int) {
+        mqttAndroidClient.subscribe(topic, qos, null, object : IMqttActionListener {
             override fun onSuccess(asyncActionToken: IMqttToken) {
                 Timber.i("subscribe onSuccess: $asyncActionToken")
             }

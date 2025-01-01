@@ -19,6 +19,15 @@
             android:title="@string/preference_topic"
             app:useSimpleSummaryProvider="true" />
 
+        <ListPreference
+            android:defaultValue="@string/default_key_mqtt_qos"
+            android:dependency="@string/key_mqtt_enabled"
+            android:entries="@array/preference_mqtt_qos_entries"
+            android:entryValues="@array/preference_mqtt_qos_entry_values"
+            android:key="@string/key_mqtt_qos"
+            android:title="@string/preference_qos"
+            app:useSimpleSummaryProvider="true" />
+
         <EditTextPreference
             android:dependency="@string/key_mqtt_enabled"
             android:key="@string/key_mqtt_username"
