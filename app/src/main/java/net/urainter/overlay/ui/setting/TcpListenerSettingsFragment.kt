@@ -57,9 +57,9 @@ class TcpListenerSettingsFragment : PreferenceFragmentCompat() {
                 editText.doOnTextChanged { text, _, _, _ ->
                     val portNumber = text.toString().toIntOrNull() ?: return@doOnTextChanged
                     if (portNumber < MIN_PORT_NUMBER) {
-                        editText.setText(MIN_PORT_NUMBER.toString())
+                        editText.setText("$MIN_PORT_NUMBER")
                     } else if (portNumber > MAX_PORT_NUMBER) {
-                        editText.setText(MAX_PORT_NUMBER.toString())
+                        editText.setText("$MAX_PORT_NUMBER")
                     }
                 }
             }

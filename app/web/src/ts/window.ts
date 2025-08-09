@@ -1,12 +1,15 @@
-import { Comment, RendererInfo } from './types';
+import { Comment, OverLimitComments, RendererInfo } from './types';
 
 
 export default interface IAndroidApi {
     notifyCommentArrivedToLeftEdge: (comment: Comment, windowIndex: number) => void;
     requestDuration: (callback: (duration: number) => void) => void;
     requestDefaultDuration: (callback: (duration: number) => void) => void;
+    requestMaxCommentsOnDisplay: (callback: (maxComments: number) => void) => void;
+    requestFontSize: (callback: (size: string) => void) => void;
     requestTextColorStyle: (callback: (style: string) => void) => void;
     requestTextStrokeStyle: (callback: (style: string) => void) => void;
+    requestOverLimitComments: (callback: (value: OverLimitComments) => void) => void;
     requestNewlineEnabled: (callback: (isEnabled: boolean) => void) => void;
     requestIconEnabled: (callback: (isEnabled: boolean) => void) => void;
     requestInlineImgEnabled: (callback: (isEnabled: boolean) => void) => void;
@@ -16,6 +19,7 @@ export default interface IAndroidApi {
     onCommentReceived: (callback: (comment: Comment, rendererInfo: RendererInfo) => void) => void;
     onTogglePause: (callback: () => void) => void;
     onDurationUpdated: (callback: (duration: number) => void) => void;
+    onUpdateOverLimitComments: (callback: (value: OverLimitComments) => void) => void;
     onUpdateNewlineEnabled: (callback: (isEnabled: boolean) => void) => void;
     onUpdateIconEnabled: (callback: (isEnabled: boolean) => void) => void;
     onUpdateInlineImgEnabled: (callback: (isEnabled: boolean) => void) => void;

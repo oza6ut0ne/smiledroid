@@ -9,6 +9,7 @@ class JsObject(private val context: Context) {
     companion object {
         const val JS_NAME = "jsObject"
         private const val DEFAULT_DURATION = 5000
+        private const val OVER_LIMIT_COMMENT = "discard"
     }
 
     @JavascriptInterface
@@ -23,6 +24,26 @@ class JsObject(private val context: Context) {
 
     @JavascriptInterface
     fun requestDefaultDuration() = DEFAULT_DURATION
+
+    @JavascriptInterface
+    fun requestMaxCommentsOnDisplay(): Int {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val default = context.getString(R.string.default_key_basic_max_comment_on_display).toInt()
+        return sharedPreferences.getString(
+            context.getString(R.string.key_basic_max_comments_on_display),
+            context.getString(R.string.default_key_basic_max_comment_on_display)
+        )?.toIntOrNull() ?: default
+    }
+
+    @JavascriptInterface
+    fun requestFontSize(): String {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val default = context.getString(R.string.default_key_basic_font_size)
+        return sharedPreferences.getString(
+            context.getString(R.string.key_basic_font_size),
+            default
+        ) ?: default
+    }
 
     @JavascriptInterface
     fun requestTextColorStyle(): String {
@@ -43,6 +64,9 @@ class JsObject(private val context: Context) {
             default
         ) ?: default
     }
+
+    @JavascriptInterface
+    fun requestOverLimitComments() = OVER_LIMIT_COMMENT
 
     @JavascriptInterface
     fun requestNewlineEnabled(): Boolean {

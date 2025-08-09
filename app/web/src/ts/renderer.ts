@@ -1,14 +1,17 @@
 import { Api } from './api';
-import { ICON_SEPARATOR, COLOR_SEPARATOR, TEXT_STROKE_SEPARATOR, IMG_SEPARATOR, INLINE_IMG_SEPARATOR, VIDEO_SEPARATOR } from './const';
-import { Comment, RendererInfo } from './types';
+import { ICON_SEPARATOR, FONT_SIZE_SEPARATOR, COLOR_SEPARATOR, TEXT_STROKE_SEPARATOR, IMG_SEPARATOR, INLINE_IMG_SEPARATOR, VIDEO_SEPARATOR } from './const';
+import { Comment, OverLimitComments, RendererInfo } from './types';
 import { base64decode, noTruncSplit } from './util';
 import './window';
 
 const FLASHING_DECAY_TIME_MSEC = 1000;
 
 let durationPerDisplayMsec: number;
+let maxCommentsOnDisplay: number
+let fontSizeStyle: string;
 let textColorStyle: string;
 let textStrokeStyle: string;
+let overLimitComments: OverLimitComments;
 let newlineEnabled: boolean;
 let iconEnabled: boolean;
 let inlineImgEnabled: boolean;
@@ -21,8 +24,11 @@ let isPause = false;
 document.addEventListener('DOMContentLoaded', () => {
     Api.requestDefaultDuration(setupIpcHandlers);
     Api.requestDuration((duration) => durationPerDisplayMsec = duration);
+    Api.requestMaxCommentsOnDisplay((maxComments) => maxCommentsOnDisplay = maxComments);
+    Api.requestFontSize((size) => fontSizeStyle = size);
     Api.requestTextColorStyle((style) => textColorStyle = style);
     Api.requestTextStrokeStyle((style) => textStrokeStyle = style);
+    Api.requestOverLimitComments((value) => overLimitComments = value);
     Api.requestNewlineEnabled((isEnabled) => newlineEnabled = isEnabled);
     Api.requestIconEnabled((isEnabled) => iconEnabled = isEnabled);
     Api.requestInlineImgEnabled((isEnabled) => inlineImgEnabled = isEnabled);
@@ -67,6 +73,14 @@ function addComment(comment: Comment): Promise<HTMLDivElement> {
         }
     }
 
+    let fontSize = fontSizeStyle;
+    if (text.indexOf(FONT_SIZE_SEPARATOR) !== -1) {
+        [fontSize, text] = noTruncSplit(text, FONT_SIZE_SEPARATOR, 1);
+        if (fontSize.match(/^\d+$/)) {
+            fontSize += 'pt';
+        }
+    }
+
     let color = textColorStyle;
     if (text.indexOf(COLOR_SEPARATOR) !== -1) {
         [color, text] = noTruncSplit(text, COLOR_SEPARATOR, 1);
@@ -95,6 +109,8 @@ function addComment(comment: Comment): Promise<HTMLDivElement> {
     const inlineImgHeight = calcHeight(' ');
     const mediaPromises: Promise<void>[] = [];
     mediaPromises.push(addImage(commentDiv, iconSrc, mediaHeight, 'image', roundIconEnabled));
+
+    commentDiv.style.fontSize = fontSize;
 
     const contentDiv = document.createElement('div');
     contentDiv.className ='content';
@@ -241,6 +257,10 @@ function animateToLeft(div: HTMLDivElement, start: number, end: number, duration
         animation.pause();
     }
 
+    animation.oncancel = (a) => {
+        document.body.removeChild(div);
+    };
+
     return animation.finished;
 }
 
@@ -249,15 +269,34 @@ export async function handleComment(_comment: Comment, rendererInfo: RendererInf
     const commentDiv = await addComment(comment);
     const wideWindowFactor = rendererInfo.isSingleWindow ? rendererInfo.numDisplays : 1;
     const durationRatio = 1 / (1 + commentDiv.offsetWidth * wideWindowFactor / window.innerWidth);
+    if(!isPause) {
+        const commentAmimations = getCommentAnimations();
+        if (overLimitComments !== 'keep' && maxCommentsOnDisplay > 0 && commentAmimations.length >= maxCommentsOnDisplay) {
+            for (let i = 0; i < commentAmimations.length - maxCommentsOnDisplay + 1; i++) {
+                commentAmimations[i]?.cancel();
+            }
+        }
+    }
+
 
     animateToLeft(commentDiv, window.innerWidth, 0,
                   durationPerDisplayMsec * wideWindowFactor * durationRatio)
-    .then(() => {
-        Api.notifyCommentArrivedToLeftEdge(comment, rendererInfo.windowIndex);
-        return animateToLeft(commentDiv, 0, -commentDiv.offsetWidth * wideWindowFactor,
-                             durationPerDisplayMsec * wideWindowFactor * (1 - durationRatio));
-    }).then(() => {
-        document.body.removeChild(commentDiv);
+    .catch(() => {
+        // nop: Animation is canceled
+    }).then((a) => {
+        if (a instanceof Animation || overLimitComments !== 'discard') {
+            Api.notifyCommentArrivedToLeftEdge(comment, rendererInfo.windowIndex);
+            if (a instanceof Animation) {
+                return animateToLeft(commentDiv, 0, -commentDiv.offsetWidth * wideWindowFactor,
+                                     durationPerDisplayMsec * wideWindowFactor * (1 - durationRatio));
+            }
+        }
+    }).catch(() => {
+        // nop: Animation is canceled
+    }).then((a) => {
+        if (a instanceof Animation) {
+            document.body.removeChild(commentDiv);
+        }
     });
 }
 
@@ -296,6 +335,7 @@ function setupIpcHandlers(defaultDuration: number) {
     });
 
     Api.onTogglePause(togglePause);
+    Api.onUpdateOverLimitComments((value) => overLimitComments = value);
     Api.onUpdateNewlineEnabled((isEnabled) => newlineEnabled = isEnabled);
     Api.onUpdateIconEnabled((isEnabled) => iconEnabled = isEnabled);
     Api.onUpdateInlineImgEnabled((isEnabled) => inlineImgEnabled = isEnabled);

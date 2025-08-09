@@ -17,6 +17,8 @@ class BasicSettingsFragment : PreferenceFragmentCompat() {
     companion object {
         private const val MIN_DURATION = 1
         private const val MAX_DURATION = Int.MAX_VALUE
+        private const val MIN_MAX_COMMENT_ON_DISPLAY = 0
+        private const val MAX_MAX_COMMENT_ON_DISPLAY = Int.MAX_VALUE
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,9 +54,23 @@ class BasicSettingsFragment : PreferenceFragmentCompat() {
                 editText.doOnTextChanged { text, _, _, _ ->
                     val duration = text.toString().toLongOrNull() ?: return@doOnTextChanged
                     if (duration < MIN_DURATION) {
-                        editText.setText(MIN_DURATION.toString())
+                        editText.setText("$MIN_DURATION")
                     } else if (duration > MAX_DURATION) {
-                        editText.setText(MAX_DURATION.toString())
+                        editText.setText("$MAX_DURATION")
+                    }
+                }
+            }
+        }
+
+        findPreference<EditTextPreference?>(getString(R.string.key_basic_max_comments_on_display))?.run {
+            setOnBindEditTextListener { editText ->
+                editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_NORMAL
+                editText.doOnTextChanged { text, _, _, _ ->
+                    val duration = text.toString().toLongOrNull() ?: return@doOnTextChanged
+                    if (duration < MIN_MAX_COMMENT_ON_DISPLAY) {
+                        editText.setText("$MIN_MAX_COMMENT_ON_DISPLAY")
+                    } else if (duration > MAX_MAX_COMMENT_ON_DISPLAY) {
+                        editText.setText("$MAX_MAX_COMMENT_ON_DISPLAY")
                     }
                 }
             }

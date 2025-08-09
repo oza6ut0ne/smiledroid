@@ -9,11 +9,13 @@ data class CommentSchema(
     val images: List<String>? = null,
     val videos: List<String>? = null,
     val inlineImages: List<String>? = null,
+    val fontSize: String? = null,
     val color: String? = null,
     val textStroke: String? = null,
 ) {
     companion object {
         const val ICON_SEPARATOR = "##ICON##"
+        const val FONT_SIZE_SEPARATOR = "##FONT_SIZE##"
         const val COLOR_SEPARATOR = "##COLOR##"
         const val TEXT_STROKE_SEPARATOR = "##TEXT_STROKE##"
         const val INLINE_IMG_SEPARATOR = "##INLINE_IMG##"
@@ -26,6 +28,13 @@ data class CommentSchema(
         icon?.let {
             append(it)
             append(ICON_SEPARATOR)
+        }
+        fontSize?.let {
+            append(it)
+            if (fontSize.toDoubleOrNull() != null) {
+                append("pt")
+            }
+            append(FONT_SIZE_SEPARATOR)
         }
         color?.let {
             append(it)

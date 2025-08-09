@@ -26,8 +26,10 @@
 
     <string name="basic_settings_fragment_label">Basic Settings</string>
     <string name="preference_category_basic">Basic</string>
-    <string name="preference_category_comment_sources">Comment Sources</string>
+    <string name="preference_category_comments_sources">Comment Sources</string>
     <string name="preference_duration">Duration</string>
+    <string name="preference_max_comments_on_display">Max comments on display</string>
+    <string name="preference_font_size">Font size</string>
     <string name="preference_text_color_style">Text color style</string>
     <string name="preference_text_stroke_style">Text stroke style</string>
     <string name="preference_newline_enabled">Newline enabled</string>
@@ -38,6 +40,8 @@
     <string name="preference_round_icon_enabled">Round icon enabled</string>
     <string name="preference_hardware_acceleration_enabled">Hardware acceleration enabled</string>
     <string name="key_basic_duration">basicDuration</string>
+    <string name="key_basic_max_comments_on_display">maxCommentsOnDisplay</string>
+    <string name="key_basic_font_size">fontSize</string>
     <string name="key_basic_text_color_style">basicTextColorStyle</string>
     <string name="key_basic_text_stroke_style">basicTextStrokeStyle</string>
     <string name="key_basic_newline_enabled">basicNewlineEnabled</string>
@@ -48,6 +52,8 @@
     <string name="key_basic_round_icon_enabled">basicRoundIconEnabled</string>
     <string name="key_basic_hardware_acceleration_enabled">basicHardwareAccelerationEnabled</string>
     <string name="default_key_basic_duration">5000</string>
+    <string name="default_key_basic_max_comment_on_display">0</string>
+    <string name="default_key_basic_font_size">36pt</string>
     <string name="default_key_basic_text_color_style">rgba(255, 255, 255, 1.0)</string>
     <string name="default_key_basic_text_stroke_style">2px rgba(0, 0, 0, 1.0)</string>
     <string name="default_key_basic_newline_enabled">true</string>

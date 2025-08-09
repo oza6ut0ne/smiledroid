@@ -1,4 +1,4 @@
-import { Comment, RendererInfo } from './types';
+import { Comment, OverLimitComments, RendererInfo } from './types';
 
 export class Api {
     static notifyCommentArrivedToLeftEdge(comment: Comment, windowIndex: number) {
@@ -17,6 +17,18 @@ export class Api {
         callback(result);
     }
 
+    static requestMaxCommentsOnDisplay(callback: (maxComments: number) => void) {
+        // @ts-ignore
+        const result = jsObject.requestMaxCommentsOnDisplay() as number;
+        callback(result);
+    }
+
+    static requestFontSize(callback: (size: string) => void) {
+        // @ts-ignore
+        const result = jsObject.requestFontSize() as string;
+        callback(result);
+    }
+
     static requestTextColorStyle(callback: (style: string) => void) {
         // @ts-ignore
         const result = jsObject.requestTextColorStyle() as string;
@@ -26,6 +38,12 @@ export class Api {
     static requestTextStrokeStyle(callback: (style: string) => void) {
         // @ts-ignore
         const result = jsObject.requestTextStrokeStyle() as string;
+        callback(result);
+    }
+
+    static requestOverLimitComments(callback: (value: OverLimitComments) => void) {
+        // @ts-ignore
+        const result = jsObject.requestOverLimitComments() as OverLimitComments;
         callback(result);
     }
 
@@ -70,6 +88,10 @@ export class Api {
     }
 
     static onTogglePause(callback: () => void) {
+        // nop.
+    }
+
+    static onUpdateOverLimitComments(callback: (value: OverLimitComments) => void) {
         // nop.
     }
 

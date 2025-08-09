@@ -9,7 +9,7 @@
         </PreferenceScreen>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/preference_category_comment_sources">
+    <PreferenceCategory android:title="@string/preference_category_comments_sources">
         <PreferenceScreen
             app:key="@string/key_mqtt_settings"
             app:title="@string/preference_mqtt_settings">

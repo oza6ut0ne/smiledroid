@@ -9,6 +9,18 @@
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
+            android:defaultValue="@string/default_key_basic_max_comment_on_display"
+            android:key="@string/key_basic_max_comments_on_display"
+            android:title="@string/preference_max_comments_on_display"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:defaultValue="@string/default_key_basic_font_size"
+            android:key="@string/key_basic_font_size"
+            android:title="@string/preference_font_size"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
             android:defaultValue="@string/default_key_basic_text_color_style"
             android:key="@string/key_basic_text_color_style"
             android:title="@string/preference_text_color_style"
